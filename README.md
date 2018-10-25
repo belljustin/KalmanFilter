@@ -6,4 +6,5 @@ Based on the [wikipedia example](en.wikipedia.org/wiki/Kalman_filter#Example_app
 
 ## Results
 
-![Kalman Filter Results](https://raw.githubusercontent.com/belljustin/KalmanFilter/resources/plot.png)
+![Kalman Filter Position Results](https://raw.githubusercontent.com/belljustin/KalmanFilter/resources/position_plot.png)
+![Kalman Filter Velocity Results](https://raw.githubusercontent.com/belljustin/KalmanFilter/resources/velocity_plot.png)

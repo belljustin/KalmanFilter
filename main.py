@@ -111,21 +111,47 @@ if __name__ == '__main__':
                       Process.obs_std_dev**2)
     p = Process(initial_state, transition_model)
 
-    states = list()
+    positions = list()
+    velocities = list()
+
     observations = list()
-    estimates = list()
+
+    positionEstimates = list()
+    velocityEstimates = list()
 
     for i in range(0, 100):
-        states.append(p.update()[0, 0])
+        state = p.update()
+        positions.append(state[0, 0])
+        velocities.append(state[1, 0])
+
         obs = p.observe()
         observations.append(obs)
+
         kf.predict(np.array([[0, 0]]))
-        estimates.append(kf.update(obs)[0, 0])
+        estimate = kf.update(obs)
+
+        positionEstimates.append(kf.update(obs)[0, 0])
+        velocityEstimates.append(kf.update(obs)[1, 0])
 
     xs = np.arange(len(observations))
+
+    # Position - State, Observations, Estimate
+    pStates, = plt.plot(xs, positions, color='k')
     pObs, = plt.plot(xs, observations, color='r')
-    pStates, = plt.plot(xs, states, color='b')
-    pEstimates, = plt.plot(xs, estimates, color='g')
+    pEstimates, = plt.plot(xs, positionEstimates, color='g')
     plt.legend((pObs, pStates, pEstimates),
                ('observations', 'true state', 'estimates'))
+    plt.title("Kalman Filter - Position Observations vs Estimates")
+    plt.ylabel('x', rotation=90)
+    plt.xlabel('t')
+    plt.show()
+
+    # Velocity - State, Estimate
+    pStates, = plt.plot(xs, velocities, color='k')
+    pEstimates, = plt.plot(xs, velocityEstimates, color='g')
+    plt.legend((pStates, pEstimates),
+               ('true state', 'estimates'))
+    plt.title("Kalman Filter - Velocity")
+    plt.ylabel('ẋ', rotation=90)
+    plt.xlabel('t')
     plt.show()
