@@ -45,7 +45,7 @@ class Process:
     acc_std_dev = 2
     obs_std_dev = 80
 
-    def __init__(self, initial_state, transition_model, ):
+    def __init__(self, initial_state, transition_model):
         self.state = initial_state
         self.transition_model = transition_model
 
@@ -59,6 +59,16 @@ class Process:
         return self.state[0, 0] + np.random.normal(0, Process.obs_std_dev)
 
 
+'''
+Based on the wikipedia example:
+en.wikipedia.org/wiki/Kalman_filter#Example_application,_technical
+
+Consider a truck on frictionless, straight rails. Initially, the truck
+is stationary at position 0, but it is buffeted this way and that by random
+uncontrolled forces. We measure the position of the truck every Δt seconds,
+but these measurements are imprecise; we want to maintain a model of where the
+truck is and what is its velocity.
+'''
 if __name__ == '__main__':
     # delta time
     dt = 1
@@ -113,9 +123,9 @@ if __name__ == '__main__':
         estimates.append(kf.update(obs)[0, 0])
 
     xs = np.arange(len(observations))
-    pObs = plt.scatter(xs, observations, color='r')
-    pStates = plt.plot(xs, states, color='b')
-    pEstimates = plt.scatter(xs, estimates, color='g')
+    pObs, = plt.plot(xs, observations, color='r')
+    pStates, = plt.plot(xs, states, color='b')
+    pEstimates, = plt.plot(xs, estimates, color='g')
     plt.legend((pObs, pStates, pEstimates),
                ('observations', 'true state', 'estimates'))
     plt.show()
